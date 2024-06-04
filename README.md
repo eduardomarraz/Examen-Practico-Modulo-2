@@ -213,5 +213,3 @@ Y pruebas el test con este comando:
 ```jsx
 **python3 test_hello.py**
 ```
-
-- **Utilización de herramientas de prueba como unit test en Python para ejecutar pruebas automatizadas.**

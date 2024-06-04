@@ -1,4 +1,4 @@
-PRUEBA PILOTO EXAMEN MODULO 2
+<h1>PRUEBA PILOTO EXAMEN MODULO 2</h1>
 
 - Instrucciones:
 
@@ -209,7 +209,91 @@ if __name__ == '__main__':
 ```
 
 Y pruebas el test con este comando:
+```jsx
+python3 test_hello.py
+```
+
+**python3 test_hello.py**
+<h2> Incorporación a Futuro con RDS: </h2>
+
+<h3>Crear una base de datos RDS.</h3>
+Una vez creada copiar el Punto de enlace, ejemplo: "database-1.c3v2jowp10tn.us-east-1.rds.amazonaws.com".
+
+Instalaciones en la EC2 de Mysql:
+
+•	Instalar mysql y php-mysql en la ec2, recuerda reiniciar el servicio de apache
+```jsx
+sudo wget https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
+sudo dnf install mysql80-community-release-el9-1.noarch.rpm -y
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
+sudo dnf install mysql-community-client -y
+sudo dnf install mysql-community-server -y
+```
+
+•	Conectarte a la base de datos desde las ec2
+```jsx
+sudo systemctl start mysqld
+sudo systemctl enable mysqld
+sudo systemctl status mysqld
+mysql -u admin -p -h database-1.c3v2jowp10tn.us-east-1.rds.amazonaws.com
+
+```
+
+Usar un archivo de configuracion que funcione parecido a este:
 
 ```jsx
-**python3 test_hello.py**
+**from flask import Flask,render_template, request
+from flaskext.mysql import MySQL
+ 
+app = Flask(__name__)
+ 
+app.config['MYSQL_HOST'] = 'database-1.c3v2jowp10tn.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'eduardoadmin1234'
+app.config['MYSQL_DB'] = 'database-1'
+ 
+mysql = MySQL(app)
+
+@app.route('/')
+def index():
+    return render_template('form1.html')
+
+@app.route('/form', methods=['GET', 'POST'])
+def form():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        return f'<h1>Hello, {name}!</h1>'
+    return render_template('form2.html')
+ 
+@app.route('/login', methods = ['POST', 'GET'])
+def login():
+    if request.method == 'GET':
+        return "Login via the login Form"
+     
+    if request.method == 'POST':
+        name = request.form['name']
+        age = request.form['age']
+        cursor = mysql.connection.cursor()
+        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(name,age))
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
+ 
+app.run(host='localhost', port=5000)**
 ```
+Habria que modificar uno de los form1.html o form2.html para que relacione el formulario con la base de datos (CREATE DATABASE , CREATE TABLE , your_table_name (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(255),
+     email VARCHAR(255),
+     message TEXT
+ );
+ 
+Y tambien relacionar la conexión con el archivo de configuración anterior.
+
+Y finalmente a traves de estos comandos:
+```jsx
+mysql> USE database-1
+mysql> SELECT * FROM Tablaejemplo;
+```
+
+Comprobariamos en la EC2 si las tablas se han creado con los datos que hemos ingresado en los formularios.

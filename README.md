@@ -63,7 +63,7 @@ cd flask_app
 - En el directorio `flask_app`, crea y abre el archivo `hello.py`.
 
 ```jsx
-nano hello[.py](http://app.py/)
+nano hello.py
 ```
 
 Añade el siguiente código a `hello.py` para crear una aplicación Flask con una ruta y un formulario.
@@ -92,7 +92,7 @@ if __name__ == '__main__':
 - **Implementación de funcionalidades básicas de la aplicación:**
     - Añade al menos una ruta
     
-    [http://<tu-ip-publica-de-ec2>:5000/form](https://www.notion.so/http-tu-ip-publica-de-ec2-5000-form-246d271c31794a778fb4d3340fb6b306?pvs=21)
+    [http://<tu-ip-publica-de-ec2>:5000/form]
     
     - Añade al menos un formulario
         
